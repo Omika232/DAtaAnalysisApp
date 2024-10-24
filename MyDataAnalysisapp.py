@@ -68,21 +68,22 @@ if(file != None):
                ).reset_index()
                st.dataframe(result1)
                st.subheader(':rainbow[Visualization Of DaTaSeT]',divider='rainbow')
-               charts = st.selectbox('Choose Chart for Vizualization',options=['line','bar','pie','scatter','sunburst'])
-               if (charts == 'line'):
+               st.session_state.chart_type = st.selectbox('Choose Chart for Vizualization',options=['line','bar','pie','scatter','sunburst'])
+            if st.session_state.chart_type is not None:
+               if (st.session_state.chart_type == 'line'):
                    x_axis = st.selectbox('Choose x axis',options = list(result1.columns))
                    y_axis = st.selectbox('Choose y axis ', options =list(result1.columns) )
                    color = st.selectbox('Choose coloumn for information ',options=[None]+list(result1.columns))
                    fig1 = px.line(data_frame=result1,x=x_axis,y=y_axis,color=color,markers='o')
                    st.plotly_chart(fig1)
-               elif (charts =='bar'):
+               elif (st.session_state.chart_type =='bar'):
                    x_axis = st.selectbox('Choose x axis', options=list(result1.columns))
                    y_axis = st.selectbox('Choose y axis ', options=list(result1.columns))
                    color = st.selectbox('Choose coloumn for information ', options=[None] + list(result1.columns))
                    facet_col = st.selectbox('Choose column information',options=[None]+list(result1.columns))
                    fig2 = px.bar(data_frame=result1, x=x_axis, y=y_axis, color=color,facet_col=facet_col,barmode='group')
                    st.plotly_chart(fig2)
-               elif (charts == 'scatter'):
+               elif (st.session_state.chart_type == 'scatter'):
                    x_axis = st.selectbox('Choose x axis', options=list(result1.columns))
                    y_axis = st.selectbox('Choose y axis ', options=list(result1.columns))
                    color = st.selectbox('Choose coloumn for information ', options=[None] + list(result1.columns))
@@ -90,12 +91,12 @@ if(file != None):
                    size = st.selectbox('Size Column',options=[None]+list(data.columns))
                    fig3 = px.scatter(data_frame=result1, x=x_axis, y=y_axis, color=color,size=size,facet_col=facet_col)
                    st.plotly_chart(fig3)
-               elif (charts=='pie'):
+               elif (st.session_state.chart_type=='pie'):
                    value = st.selectbox('Choose numeric values', options=list(result1.columns))
                    name  = st.selectbox('Choose labels ', options=list(result1.columns))
                    fig4= px.pie(data_frame=result1,names=name,values=value)
                    st.plotly_chart(fig4)
-               elif (charts == 'sunburst'):
+               elif (st.session_state.chart_type == 'sunburst'):
                    path = st.multiselect('Choose your path ', options=list(result1.columns))
                    #value  = this is always our newcol
                    fig5 = px.sunburst(data_frame=result1, path=path,values='newcol')
